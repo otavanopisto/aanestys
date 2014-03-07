@@ -1,6 +1,6 @@
 <html>
 <head>
-<title></title>
+<title>Äänestyskikkare</title>
 </head>
 <body>
 %if name == 'World':
