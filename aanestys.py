@@ -26,7 +26,7 @@ aanestykset = [
 def lisaa_aanestys():
     aanestykset.append(
         {
-            "numero": max(getitem('numero') for x in aanestykset) + 1,
+            "numero": max(getitem(x, 'numero') for x in aanestykset) + 1,
             "nimi": request.forms['nimi'],
             "kylla": 0,
             "ei": 0,
