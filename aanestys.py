@@ -54,4 +54,8 @@ def sulje_aanestys():
     aanestykset[numero]['suljettu'] = True
     return redirect('/', 303)
 
+@route('/hello/<name>')
+def index(name):
+    return template('aanestys_template',name=name)
+
 run(host='localhost', port=8080)
