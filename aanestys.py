@@ -26,7 +26,7 @@ aanestykset = [
 def lisaa_aanestys():
     aanestykset.append(
         {
-            "numero": max(getitem('numero') for x in äänestykset) + 1,
+            "numero": max(getitem('numero') for x in aanestykset) + 1,
             "nimi": request.forms['nimi'],
             "kylla": 0,
             "ei": 0,
@@ -39,7 +39,6 @@ def aanesta(aani):
     numero = request.forms['numero']
     aanestykset[numero][aani] += 1
     return redirect('/', 303)
-
 
 @post('/aanesta_kylla')
 def aanesta_kylla():
