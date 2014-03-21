@@ -3,6 +3,9 @@
 from operator import getitem
 
 import json
+import threading
+
+from functools import wraps
 
 from bottle import *
 
@@ -24,7 +27,19 @@ aanestykset = [
      "suljettu": True}
 ]
 
+lukko = threading.Lock()
+
+def lukitse(f):
+    @wraps(f)
+    def lukittu(*args, **kwargs):
+        lukko.acquire()
+        tulos = f(*args, **kwargs)
+        lukko.release()
+        return tulos
+    return lukittu
+
 @post('/lisaa_aanestys')
+@lukitse
 def lisaa_aanestys():
     aanestykset.append(
         {
@@ -49,14 +64,17 @@ def aanesta(aani):
     return redirect('/', 303)
 
 @post('/aanesta_kylla')
+@lukitse
 def aanesta_kylla():
     return aanesta('kylla')
 
 @post('/aanesta_ei')
+@lukitse
 def aanesta_ei():
     return aanesta('ei')
 
 @post('/sulje_aanestys')
+@lukitse
 def sulje_aanestys():
     numero = request.forms['numero']
     hae_aanestys(numero)['suljettu'] = True
