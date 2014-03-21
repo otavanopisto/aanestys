@@ -2,6 +2,8 @@
 # coding=utf-8
 from operator import getitem
 
+import json
+
 from bottle import *
 
 aanestykset = [
@@ -35,9 +37,15 @@ def lisaa_aanestys():
     )
     return redirect('/', 303)
 
+def hae_aanestys(numero):
+    for aanestys in aanestykset:
+        if aanestys['numero'] == int(numero):
+            return aanestys
+    raise KeyError("Äänestystä ei löytynyt")
+
 def aanesta(aani):
     numero = request.forms['numero']
-    aanestykset[numero][aani] += 1
+    hae_aanestys(numero)[aani] += 1
     return redirect('/', 303)
 
 @post('/aanesta_kylla')
@@ -51,8 +59,12 @@ def aanesta_ei():
 @post('/sulje_aanestys')
 def sulje_aanestys():
     numero = request.forms['numero']
-    aanestykset[numero]['suljettu'] = True
+    hae_aanestys(numero)['suljettu'] = True
     return redirect('/', 303)
+
+@route('/')
+def aanestykset_raaka():
+    return json.dumps(aanestykset, indent=2)
 
 @route('/hello/<name>')
 def index(name):
