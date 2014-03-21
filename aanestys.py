@@ -32,10 +32,8 @@ lukko = threading.Lock()
 def lukitse(f):
     @wraps(f)
     def lukittu(*args, **kwargs):
-        lukko.acquire()
-        tulos = f(*args, **kwargs)
-        lukko.release()
-        return tulos
+        with lukko:
+            return f(*args, **kwargs)
     return lukittu
 
 @post('/lisaa_aanestys')
