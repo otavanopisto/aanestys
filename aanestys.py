@@ -36,6 +36,17 @@ def lukitse(f):
             return f(*args, **kwargs)
     return lukittu
 
+def hae_aanestys(numero):
+    for aanestys in aanestykset:
+        if aanestys['numero'] == int(numero):
+            return aanestys
+    raise KeyError("Äänestystä ei löytynyt")
+
+def aanesta(aani):
+    numero = request.forms['numero']
+    hae_aanestys(numero)[aani] += 1
+    return redirect('/', 303)
+
 @post('/lisaa_aanestys')
 @lukitse
 def lisaa_aanestys():
@@ -48,17 +59,6 @@ def lisaa_aanestys():
             "suljettu": False,
         }
     )
-    return redirect('/', 303)
-
-def hae_aanestys(numero):
-    for aanestys in aanestykset:
-        if aanestys['numero'] == int(numero):
-            return aanestys
-    raise KeyError("Äänestystä ei löytynyt")
-
-def aanesta(aani):
-    numero = request.forms['numero']
-    hae_aanestys(numero)[aani] += 1
     return redirect('/', 303)
 
 @post('/aanesta_kylla')
