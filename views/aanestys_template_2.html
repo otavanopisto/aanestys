@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+</head>
+<body>
+<ul>
+% for aanestys in aanestykset:
+    <li>
+        <dl>
+            <dt>Nimi</dt>
+            <dd>{{aanestys['nimi']}}</dd>
+            % if aanestys['suljettu']:
+                <dt>Kyllä</dt>
+                <dd>{{aanestys['kylla']}}</dd>
+                <dt>Ei</dt>
+                <dd>{{aanestys['ei']}}</dd>
+            % else:
+                <dt>Äänestä</dt>
+                <dd>
+                    <form method="post"
+                          action="{{ get_url('aanesta_kylla') }}">
+                        <input type="hidden"
+                               name="numero"
+                               value="{{ aanestys['numero'] }}" />
+                        <button type="submit">Kyllä</button>
+                    </form>
+                </dd>
+                <dd>
+                    <form method="post"
+                          action="{{ get_url('aanesta_ei') }}">
+                        <input type="hidden"
+                               name="numero"
+                               value="{{ aanestys['numero'] }}" />
+                        <button type="submit">Ei</button>
+                    </form>
+                </dd>
+                <dt>Sulje</dt>
+                <dd>
+                    <form method="post"
+                          action="{{ get_url('sulje_aanestys') }}">
+                        <input type="hidden"
+                               name="numero"
+                               value="{{ aanestys['numero'] }}" />
+                        <button type="submit">Sulje</button>
+                    </form>
+                </dd>
+            % end
+        </dl>
+    </li>
+    % end
+</ul>
+<form method="post" action="{{ get_url('lisaa_aanestys') }}">
+    Nimi: <input type="text" name="nimi" /> <button type="submit">Lisää</button>
+</form>
+</body>
+</html>
