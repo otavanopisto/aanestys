@@ -88,4 +88,4 @@ def kaikki_aanestykset():
 def index(name):
     return template('aanestys_template',name=name)
 
-run(host='localhost', port=6666)
+run(host='localhost', port=8888)
