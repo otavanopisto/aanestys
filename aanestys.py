@@ -47,7 +47,7 @@ def aanesta(aani):
     hae_aanestys(numero)[aani] += 1
     return redirect('/', 303)
 
-@post('/lisaa_aanestys')
+@post('/lisaa_aanestys', name='lisaa_aanestys')
 @lukitse
 def lisaa_aanestys():
     aanestykset.append(
@@ -61,17 +61,17 @@ def lisaa_aanestys():
     )
     return redirect('/', 303)
 
-@post('/aanesta_kylla')
+@post('/aanesta_kylla', name='aanesta_kylla')
 @lukitse
 def aanesta_kylla():
     return aanesta('kylla')
 
-@post('/aanesta_ei')
+@post('/aanesta_ei', name='aanesta_ei')
 @lukitse
 def aanesta_ei():
     return aanesta('ei')
 
-@post('/sulje_aanestys')
+@post('/sulje_aanestys', name='sulje_aanestys')
 @lukitse
 def sulje_aanestys():
     numero = request.forms['numero']
@@ -79,11 +79,13 @@ def sulje_aanestys():
     return redirect('/', 303)
 
 @route('/')
-def aanestykset_raaka():
-    return json.dumps(aanestykset, indent=2)
+def kaikki_aanestykset():
+    return template('aanestys_template_2',
+                    aanestykset=aanestykset,
+                    get_url=app().get_url)
 
 @route('/hello/<name>')
 def index(name):
     return template('aanestys_template',name=name)
 
-run(host='localhost', port=8080)
+run(host='localhost', port=6666)
